@@ -2,7 +2,7 @@
 - Project name: ARSETUP
 - Unity version: Unity 2023.2.22f1
 - Active game object:
-  - Name: Solar System
+  - Name: SolarSystemRoot
   - Tag: Untagged
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
