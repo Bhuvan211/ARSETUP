@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -18,50 +17,24 @@ public class AudioManager : MonoBehaviour
     [Header("Satellite Voiceovers")]
     [SerializeField] private AudioClip[] satelliteVoiceovers;
 
+    [Header("Satellite Orbit Voiceovers (0: Low Orbit, 1: Medium Orbit, 2: Geostationary, 3: Polar Orbit)")]
+    [SerializeField] private AudioClip[] satelliteOrbitVoiceovers;
+
     private void Awake()
     {
-        // Auto-assign or add AudioSource component if missing
-        if (audioSource == null)
+        if (audioSource == null && !TryGetComponent(out audioSource))
         {
-            audioSource = GetComponent<AudioSource>();
-            if (audioSource == null)
-            {
-                audioSource = gameObject.AddComponent<AudioSource>();
-            }
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
     }
 
-    /// <summary>
-    /// Plays the celestial voiceover matching the tour index (0 = Sun, 9 = Pluto).
-    /// </summary>
-    public void PlayPlanetAudio(int index)
-    {
-        PlayClipFromArray(celestialVoiceovers, index, "Celestial");
-    }
+    public void PlayPlanetAudio(int index) => PlayClipFromArray(celestialVoiceovers, index, "Celestial");
+    public void PlayMoonAudio(int index) => PlayClipFromArray(moonVoiceovers, index, "Moon");
+    public void PlaySolarSystemAudio(int index) => PlayClipFromArray(solarSystemVoiceovers, index, "SolarSystem");
+    public void PlaySatelliteAudio(int index) => PlayClipFromArray(satelliteVoiceovers, index, "Satellite");
+    public void PlaySatelliteOrbitAudio(int index) => PlayClipFromArray(satelliteOrbitVoiceovers, index, "SatelliteOrbit");
 
-    /// <summary>
-    /// Plays the moon voiceover matching the index.
-    /// </summary>
-    public void PlayMoonAudio(int index)
-    {
-        PlayClipFromArray(moonVoiceovers, index, "Moon");
-    }
-
-    /// <summary>
-    /// Plays the solar system voiceover matching the index.
-    /// </summary>
-    public void PlaySolarSystemAudio(int index)
-    {
-        PlayClipFromArray(solarSystemVoiceovers, index, "SolarSystem");
-    }
-
-    /// <summary>
-    /// Plays the satellite voiceover matching the index.
-    /// </summary>
-    public void PlaySatelliteAudio(int index)
-    {
-        PlayClipFromArray(satelliteVoiceovers, index, "Satellite");
-    }
+    public int GetSatelliteOrbitAudioCount() => satelliteOrbitVoiceovers != null ? satelliteOrbitVoiceovers.Length : 0;
 
     private void PlayClipFromArray(AudioClip[] clipArray, int index, string categoryName)
     {
@@ -89,11 +62,5 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Returns true while the voiceover clip is currently playing.
-    /// </summary>
-    public bool IsPlaying()
-    {
-        return audioSource != null && audioSource.isPlaying;
-    }
+    public bool IsPlaying() => audioSource != null && audioSource.isPlaying;
 }
